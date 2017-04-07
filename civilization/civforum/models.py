@@ -5,25 +5,30 @@ from django.db import models
 class Board(models.Model):
     """Table representing a top level board."""
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.CharField(max_length=2048)
     creation_date = models.DateTimeField()
     last_activity = models.DateTimeField()
     locked = models.BooleanField(default=False)
+
+class PublicBoard(Board):
+    """A top level board. This table exists so that the same board model can be
+    used down the stack."""
+    board = models.ForeignKey('Board')
     
-class ProjectBoard(Board):
+class ProjectBoard(models.Model):
     """Unlike a top level board, a project board is a private enclave for a set 
     of members working collaboratively on something. Any member in good standing
     can create a project board. (This feature for example might be restricted from
-    new members to prevent its use as an easy denial of service attack.) Because
-    it is fundamentally disjoint from the top level board set, it has its own
-    separate class which defines the same data for the project boards."""
+    new members to prevent its use as an easy denial of service attack.)"""
     author = models.ForeignKey('User')
-    description = models.CharField(max_length=1024) # Prevent UI screw
+    board = models.ForeignKey('Board')
 
+    
 class PBMembers(models.Model):
     """Table specifying who is and is not part of a project board. Project
     boards have a specific set of users and are not generally visible to those 
     who are not invited."""
+    board = models.ForeignKey('ProjectBoard')
     member = models.ForeignKey('User')
     role = models.CharField(max_length=50, null=True)
     join_date = models.DateTimeField()
