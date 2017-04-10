@@ -54,7 +54,8 @@ ROOT_URLCONF = 'civilization.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "civforum/templates/registrations/"),
+                 os.path.join(BASE_DIR, "civforum/templates/")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
