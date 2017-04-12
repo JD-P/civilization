@@ -11,7 +11,7 @@ class Board(models.Model):
     last_activity = models.DateTimeField()
     locked = models.BooleanField(default=False)
 
-class PublicBoard(Board):
+class PublicBoard(models.Model):
     """A top level board. This table exists so that the same board model can be
     used down the stack."""
     board = models.ForeignKey('Board')
@@ -21,16 +21,15 @@ class ProjectBoard(models.Model):
     of members working collaboratively on something. Any member in good standing
     can create a project board. (This feature for example might be restricted from
     new members to prevent its use as an easy denial of service attack.)"""
-    author = models.ForeignKey('User')
+    creator = models.ForeignKey(User)
     board = models.ForeignKey('Board')
 
-    
 class PBMembers(models.Model):
     """Table specifying who is and is not part of a project board. Project
     boards have a specific set of users and are not generally visible to those 
     who are not invited."""
     board = models.ForeignKey('ProjectBoard')
-    member = models.ForeignKey('User')
+    member = models.ForeignKey(User)
     role = models.CharField(max_length=50, null=True)
     join_date = models.DateTimeField()
     
@@ -38,7 +37,7 @@ class Thread(models.Model):
     """Table representing a forum thread."""
     board = models.ForeignKey('Board')
     title = models.CharField(max_length=125)
-    author = models.ForeignKey('User')
+    author = models.ForeignKey(User)
     rigor = models.ForeignKey('Rigor')
     posts = models.IntegerField()
     creation_date = models.DateTimeField()
@@ -62,11 +61,12 @@ class Purpose(models.Model):
 class Prediction(models.Model):
     """A prediction. One that might be made as part of a forum post or on its own."""
     text = models.CharField(max_length=2048)
-    judge = models.ForeignKey('User')
+    judge = models.ForeignKey(User)
     creation_date = models.DateTimeField()
     judge_date = models.DateTimeField(null=True)
-    probability = models.DecimalField()
-    outcome = models.BooleanField(null=True, default=None)
+    probability = models.DecimalField(max_digits=6,
+                                      decimal_places=5)
+    outcome = models.NullBooleanField(null=True, default=None)
     
 class Tag(models.Model):
     """Table to store all the tags which are in use on any thread."""
@@ -89,9 +89,15 @@ class TRTag(models.Model):
     thread = models.ForeignKey('Thread', on_delete=models.CASCADE)
     rtag = models.ForeignKey('RTag')
 
+class Rigor(models.Model):
+    """Holds the different levels of rigor which a thread can be assigned. These
+    are defined in a table rather than hardcoded."""
+    label = models.CharField(max_length=50)
+    description = models.TextField()
+    
 class TPost(models.Model):
     """A forum thread post. May have predictions and up to three 100kb attachments."""
-    author = models.ForeignKey('User')
+    author = models.ForeignKey(User)
     creation_date = models.DateTimeField()
     body = models.CharField(max_length=57344)
     mood = models.ForeignKey('Mood')
@@ -108,13 +114,19 @@ class TPostAttachment(models.Model):
     space I have on my servers than any particular animus against big files."""
     post = models.ForeignKey('TPost')
     file = models.FileField(upload_to='/attachments', max_length=102400)
+
+class Mood(models.Model):
+    """Table to store the different moods which it is mandatory to mark a thread 
+    post with."""
+    label = models.CharField(max_length=50)
+    description = models.TextField()
     
 class Ban(models.Model):
     """A ban table that is checked at login time to see if a user is still allowed
     to access the system. Note that not all things in the ban table are *bans* per se.
     For example a user might request to have themselves disallowed from using the site
     for a few hours so they can get things done. Or even an entire week."""
-    user = models.ForeignKey('User')
+    user = models.ForeignKey(User)
     ban_type = models.ForeignKey('BanType')
     ban_reason = models.TextField()
     ban_date = models.DateTimeField()
