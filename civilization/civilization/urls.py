@@ -19,7 +19,9 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^login/', auth_views.login, name="login"),
+    url(r'^login/', auth_views.login,
+        {'extra_context':{'next':'/forums/tracker/'}},
+        name="login"),
     url('logout/', auth_views.logout),
     url(r'^forums/', include('civforum.urls')),
 ]

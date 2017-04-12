@@ -6,14 +6,14 @@ from civforum.models import *
 
 def boards(request):
     if request.method == 'GET':
-        render(request,
-               'boards.html',
-               {'boards':Board.objects.all()})
+        return render(request,
+                      'boards.html',
+                      {'boards':Board.objects.all()})
     else:
         HttpResponse("POST requests not accepted on this view.")
 
 def tracker(request):
     if request.method == 'GET':
-        render(request,
-               'tracker.html',
-               {}) # Placeholder, will add context later
+        return render(request,
+                      'tracker.html',
+                      {}) # Placeholder, will add context later
