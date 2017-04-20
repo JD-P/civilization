@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title> FortForecast Forums </title>
+    <link rel="stylesheet" href="/static/boards.css">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <table>
+      {% for board in boards %}
+      <tr>
+	<div class="board-left">
+	<td>{{ board.title }}</td>
+	<td>{{ board.description }}</td>
+	<td>{{ board.creation_date }}</td>
+	</div>
+	<div class="board-right">
+	  <td>{{ board.last_activity }}</td>
+	  <td>{{ board.locked }}</td>
+	</div>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
+
