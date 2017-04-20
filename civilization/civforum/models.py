@@ -76,6 +76,7 @@ class RTag(models.Model):
     """Table to store the different restricted tags which are mandatory to use
     when creating a thread."""
     tag = models.ForeignKey('Tag')
+    description = models.TextField()
     
 class TPurpose(models.Model):
     """A thread purpose. A thread can have more than one purpose associated with it,
