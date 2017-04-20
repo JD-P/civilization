@@ -6,16 +6,16 @@
   </head>
   <body>
     <table>
-      {% for board in boards %}
+      {% for pboard in public_boards %}
       <tr>
 	<div class="board-left">
-	<td>{{ board.title }}</td>
-	<td>{{ board.description }}</td>
-	<td>{{ board.creation_date }}</td>
+	<td>{{ pboard.board.title }}</td>
+	<td>{{ pboard.board.description }}</td>
+	<td>{{ pboard.board.creation_date }}</td>
 	</div>
 	<div class="board-right">
-	  <td>{{ board.last_activity }}</td>
-	  <td>{{ board.locked }}</td>
+	  <td>{{ pboard.board.last_activity }}</td>
+	  <td>{{ pboard.board.locked }}</td>
 	</div>
       </tr>
       {% endfor %}

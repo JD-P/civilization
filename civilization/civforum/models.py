@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 class Board(models.Model):
     """Table representing a top level board."""
+    def __str__(self):
+        return self.title
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=2048, null=True)
     creation_date = models.DateTimeField()
