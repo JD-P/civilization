@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Board(models.Model):
     """Table representing a top level board."""
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=2048)
+    description = models.CharField(max_length=2048, null=True)
     creation_date = models.DateTimeField()
     last_activity = models.DateTimeField()
     locked = models.BooleanField(default=False)
