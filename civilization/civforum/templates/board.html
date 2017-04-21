@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>{{ board.title }} | FortForecast</title>
+    <link rel="stylesheet" href="/static/board.css">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    {% for thread in threads %}
+    <div class="thread">
+      <div class="thread-left">
+	<p>{{ thread.title }}</p>
+	<p>{{ thread.author }}</p>
+	<p>{{ thread.creation_date }}</p>
+      </div>
+      <div class="thread-right">
+	<p> {{ thread.rigor }} </p>
+	<p> {{ thread.posts }} </p>
+	<p> {{ thread.last_activity }}</p>
+	<p> {{ thread.locked }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </body>
+</html>
