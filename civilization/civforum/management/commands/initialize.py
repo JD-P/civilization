@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = """Populates initial database with general board, levels of rigor for threads, thread purposes, moods, bantypes, tags."""
 
     def handle(self, *args, **options):
-        now = datetime.utcfromtimestamp(time.time())
+        now = datetime.utcfromtimestamp(time())
         # Create general board
         gboard = Board(title="General",
                        description="A place for threads which don't quite fit under any other board.",
@@ -20,8 +20,7 @@ class Command(BaseCommand):
         rigor_levels = (('Polymath',
                          """Academic tone. Half baked ideas are king, quarter baked ideas are emperor."""),
                         ('Casual', 'No requirements beyond engaging text.'),
-                        ('Serious', 'Major claims should come with
-                        (good) sources.'),
+                        ('Serious', 'Major claims should come with (good) sources.'),
                         ('Citation', 'Most or all claims should come with some source, even if the source is less than ideal.'),
                         ('EffortCitation', 'Most or all claims should come with a good source.'),
                         ('AcademicCitation', 'Most or all claims should come with a good source, participants should explain how they found the source, journal articles heavily preferred over other sources.'))
@@ -35,10 +34,7 @@ class Command(BaseCommand):
                            ('Poll', 'A thread to measure the opinion of users on a subject, often accompanied by a survey of some sort.'),
                            ('Proposal', 'An idea of something that forum users should consider implementing or doing.'),
                            ('Conversation', 'A discussion about a topic.'),
-                           ('Question', 'A specific query asked to
-users with a small number of \'valid\' answers. As distinct from a
-collection which has many possible answers and a poll which is less
-                           about *the* answer as it is about *other peoples* answers.'),
+                           ('Question', 'A specific query asked to users with a small number of \'valid\' answers. As distinct from a collection which has many possible answers and a poll which is less about *the* answer as it is about *other peoples* answers.'),
                            ('Other', 'Something which doesn\'t fall under the predefined thread purposes.'))
         for thread_purpose in thread_purposes:
             thread_purpose_obj = Purpose(name=thread_purpose[0],
