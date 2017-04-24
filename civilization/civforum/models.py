@@ -11,6 +11,7 @@ class Board(models.Model):
     description = models.CharField(max_length=2048, null=True)
     creation_date = models.DateTimeField()
     last_activity = models.DateTimeField()
+    num_threads = models.IntegerField(default=0)
     locked = models.BooleanField(default=False)
 
 class PublicBoard(models.Model):
@@ -144,3 +145,4 @@ class BanType(models.Model):
     week vacation would not want the "user was banned" message shown to explain to
     other users where they are when they look at their profile."""
     type = models.CharField(max_length=50)
+    description = models.TextField()
