@@ -116,7 +116,7 @@ class TPostAttachment(models.Model):
     and no more than 100kb file size per attachment. This has more to do with the sparse
     space I have on my servers than any particular animus against big files."""
     post = models.ForeignKey('TPost')
-    file = models.FileField(upload_to='/attachments', max_length=102400)
+    file = models.FileField(upload_to='attachments', max_length=102400)
 
 class Mood(models.Model):
     """Table to store the different moods which it is mandatory to mark a thread 
