@@ -9,7 +9,7 @@
       {% for pboard in public_boards %}
       <tr>
 	<div class="board-left">
-	<td>{{ pboard.board.title }}</td>
+	  <td><a href="{% url 'board' pboard.id %}">{{ pboard.board.title }}</a></td>
 	<td>{{ pboard.board.description }}</td>
 	<td>{{ pboard.board.creation_date }}</td>
 	</div>
