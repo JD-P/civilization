@@ -11,6 +11,7 @@ class Board(models.Model):
     description = models.CharField(max_length=2048, null=True)
     creation_date = models.DateTimeField()
     last_activity = models.DateTimeField()
+    num_threads = models.IntegerField(default=0)
     locked = models.BooleanField(default=False)
 
 class PublicBoard(models.Model):
@@ -116,7 +117,7 @@ class TPostAttachment(models.Model):
     and no more than 100kb file size per attachment. This has more to do with the sparse
     space I have on my servers than any particular animus against big files."""
     post = models.ForeignKey('TPost')
-    file = models.FileField(upload_to='/attachments', max_length=102400)
+    file = models.FileField(upload_to='attachments', max_length=102400)
 
 class Mood(models.Model):
     """Table to store the different moods which it is mandatory to mark a thread 
@@ -144,3 +145,4 @@ class BanType(models.Model):
     week vacation would not want the "user was banned" message shown to explain to
     other users where they are when they look at their profile."""
     type = models.CharField(max_length=50)
+    description = models.TextField()
