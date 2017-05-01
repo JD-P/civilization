@@ -53,7 +53,7 @@ class TBody(models.Model):
     for the prototype."""
     thread = models.ForeignKey('Thread')
     version = models.DateTimeField()
-    body = models.TextField()
+    body = models.CharField(max_length=57344)
     
 class Purpose(models.Model):
     """Table to store the different options to put in under the purpose field for
