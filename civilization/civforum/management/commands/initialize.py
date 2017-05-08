@@ -35,6 +35,7 @@ class Command(BaseCommand):
                            ('Proposal', 'An idea of something that forum users should consider implementing or doing.'),
                            ('Conversation', 'A discussion about a topic.'),
                            ('Question', 'A specific query asked to users with a small number of \'valid\' answers. As distinct from a collection which has many possible answers and a poll which is less about *the* answer as it is about *other peoples* answers.'),
+                           ('Journal', "A thread where the original poster documents something they're doing in their life."),
                            ('Other', 'Something which doesn\'t fall under the predefined thread purposes.'))
         for thread_purpose in thread_purposes:
             thread_purpose_obj = Purpose(name=thread_purpose[0],
