@@ -101,6 +101,7 @@ class Rigor(models.Model):
     
 class TPost(models.Model):
     """A forum thread post. May have predictions and up to three 100kb attachments."""
+    thread = models.ForeignKey(Thread)
     author = models.ForeignKey(User)
     creation_date = models.DateTimeField()
     body = models.CharField(max_length=57344)
