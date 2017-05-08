@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from civforum.models import *
+from django.db.models import Max
 from django.contrib.auth.models import User
 from civforum import forms
 from time import time
@@ -23,8 +24,31 @@ def board(request, board_id=0):
         threads = Thread.objects.filter(board=pboard.board)
         return render(request,
                       'board.html',
-                      {'threads':threads})
+                      {'pboard':pboard,
+                       'threads':threads})
 
+def thread(request, board_id, thread_id, page_number=0):
+    """Individual thread view. Threads only have ten posts a page and end 
+    after ten pages of discussion."""
+    if request.method == 'POST':
+        HttpResponse("You use the newpost view to add messages to a thread.")
+    elif request.method == 'GET':
+        if request.user.is_authenticated():
+            thread = Thread.objects.filter(id=thread_id)[0]
+            tbody_max = TBody.objects.aggregate(Max('version'))['version__max']
+            tbody = TBody.objects.filter(version=tbody_max)[0]
+            tposts = TPost.objects.filter(thread=thread)
+            return render(request,
+                          'thread.html',
+                          {'thread':thread,
+                           'tbody':tbody,
+                           'tposts':tposts})
+        else:
+            return HttpResponseRedirect(reverse('login'))
+    else:
+        HttpResponse("Nothing weird now, just use a GET request.")
+    
+    
 def newthread(request, board_id=0):
     if request.method == 'POST':
         if request.user.is_authenticated():
