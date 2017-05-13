@@ -18,7 +18,7 @@ django 1.10/1.11
 
 Run:
 
-  apt-get install git virtualenv
+    apt-get install git virtualenv
 
 Then change directories to wherever you want to host the fortforecast instance, and git clone
 this repository into it:
