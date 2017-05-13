@@ -46,7 +46,7 @@ Migrate data structures:
 
 Run the initialization script:
 
-    python3 manage.py
+    python3 manage.py initialize
 
 Create a superuser:
 
