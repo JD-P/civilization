@@ -50,11 +50,11 @@ def thread(request, board_id, thread_id, page_number=0):
     
     
 def newthread(request, board_id=0):
-    if request.method == 'POST':
-        if request.user.is_authenticated():
+    if request.user.is_authenticated():
             user_id = request.user.id
-        else:
-            return HttpResponse("You're not logged in. :P")
+    else:
+        return HttpResponseRedirect(reverse('login'))
+    if request.method == 'POST':
         now = datetime.utcfromtimestamp(time())
         form = forms.NewThreadForm(request.POST)
         clean = form.is_valid()
@@ -90,6 +90,36 @@ def newthread(request, board_id=0):
     return render(request,
                   'newthread.html',
                   {'board_id':board_id,
+                   'form':form})
+
+def newpost(request, board_id=0, thread_id=0):
+    if request.user.is_authenticated():
+        user_id = request.user.id
+    else:
+        HttpResponseRedirect(reverse('login'))
+    if request.method == 'POST':
+        thread = Thread.objects.filter(id=thread_id)[0]
+        now = datetime.utcfromtimestamp(time())
+        form = forms.NewPostForm(request.POST)
+        clean = form.is_valid()
+        mood = Mood.objects.filter(id=form.cleaned_data["mood"])[0]
+        if clean:
+            post = TPost(thread=thread,
+                        author=request.user,
+                        creation_date=now,
+                        body=form.cleaned_data["body"],
+                        mood=mood)
+            post.save()
+            return HttpResponseRedirect(reverse('thread',
+                                                kwargs={'board_id':board_id,
+                                                        'thread_id':thread_id,
+                                                        'page_number':0}))
+    elif request.method == 'GET':
+        form = forms.NewPostForm()
+    return render(request,
+                  'newpost.html',
+                  {'board_id':board_id,
+                   'thread_id':thread_id,
                    'form':form})
 
 def tracker(request):

@@ -12,6 +12,14 @@
 	<p class="body-text">{{ tbody.body }}</p>
       </article>
     </div>
+    {% for tpost in tposts %}
+    <article class="thread-post">
+      <p class="author">{{ tpost.author }}</p>
+      <p class="mood">{{ tpost.mood }}</p>
+      <p class="created">{{ tpost.creation_date }}</p>
+      <p class="text">{{ tpost.body }}</p>
+    </article>
+    {% endfor %}
   </body>
 </html>
 

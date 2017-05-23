@@ -10,6 +10,7 @@ try:
     rigors = [(rigor.id, rigor.label) for rigor in Rigor.objects.all()]
 
     purposes = [(purpose.id, purpose.name) for purpose in Purpose.objects.all()]
+    moods = [(mood.id, mood.label) for mood in Mood.objects.all()]
 except OperationalError:
     print("Models have not been migrated yet, please migrate them before use.")
     (boards, rigors, purposes) = ([],[],[])
@@ -29,3 +30,9 @@ class NewThreadForm(forms.Form):
                             widget=forms.Textarea)
     tags = forms.CharField(label="Tags",
                            max_length=2048)
+    
+class NewPostForm(forms.Form):
+    mood = forms.ChoiceField(label="Mood",
+                             choices=moods)
+    body = forms.CharField(label="Body")
+    
