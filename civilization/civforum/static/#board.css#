@@ -1,0 +1,17 @@
+.threads {
+    display: flex;
+    flex-direction: column;
+}
+
+.thread {
+    display: flex;
+    flex-direction: row;
+}
+
+.thread > p {
+    padding: 0.5em;
+    
+
+You hold in your hands a compilation of two years of daily blog posts. In retrospect, I look back on that project and see a large number of things I did completely wrong. I’m fine with that. Looking back and not seeing a huge number of things I did wrong would mean that neither my writing nor my understanding had improved since 2009. Oops is the sound we make when we improve our beliefs and strategies; so to look back at a time and not see anything you did wrong means that you haven’t learned anything or changed your mind since then. 
+
+You hold in your hands a compilation of two years of daily blog posts. In retrospect, I look back on that project and see a large number of things I did completely wrong. I’m fine with that. Looking back and not seeing a huge number of things I did wrong would mean that neither my writing nor my understanding had improved since 2009. Oops is the sound we make when we improve our beliefs and strategies; so to look back at a time and not see anything you did wrong means that you haven’t learned anything or changed your mind since then. 

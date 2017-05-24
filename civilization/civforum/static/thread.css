@@ -1,0 +1,13 @@
+.thread-posts {
+    display: flex;
+    flex-direction: column;
+}
+
+.thread-post {
+    display: flex;
+    flex-direction: row;
+}
+
+.thread-post > p {
+    padding: 0.5em;
+}

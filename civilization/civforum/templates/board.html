@@ -8,7 +8,7 @@
     <div class="threads">
       {% for thread in threads %}
       <div class="thread">
-	<p>{{ thread.rigor }}</p>
+	<p>{{ thread.rigor.label }}</p>
 	<p><a href="{% url 'thread' pboard.board.id thread.id 0 %}">{{ thread.title }}</a></p>
 	<p>{{ thread.author }}</p>
 	<p>{{ thread.posts }}</p>
