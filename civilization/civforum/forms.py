@@ -13,7 +13,7 @@ try:
     moods = [(mood.id, mood.label) for mood in Mood.objects.all()]
 except OperationalError:
     print("Models have not been migrated yet, please migrate them before use.")
-    (boards, rigors, purposes) = ([],[],[])
+    (boards, rigors, purposes, moods) = ([],[],[],[])
     
 
 class NewThreadForm(forms.Form):
