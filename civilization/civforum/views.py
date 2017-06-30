@@ -76,7 +76,17 @@ def newthread(request, board_id=0):
                           body=form.cleaned_data["tbody"])
             purpose = TPurpose(thread=thread,
                                purpose=purpose)
-            #TODO: Tags not implemented right now
+            for tag in form.cleaned_data["tags"].lower().split(","):
+                if not Tag.objects.filter(string=tag):
+                    tag = Tag(string=tag)
+                    tag.save()
+                else:
+                    tag = Tag.objects.filter(string=tag)[0]
+                ttag = TTag(thread=thread,
+                            tag=tag,
+                            tagger=user,
+                            creation_date=now)
+                ttag.save()
             tbody.save()
             purpose.save()
             return HttpResponseRedirect(
