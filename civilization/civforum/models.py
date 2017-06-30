@@ -93,6 +93,14 @@ class TRTag(models.Model):
     thread = models.ForeignKey('Thread', on_delete=models.CASCADE)
     rtag = models.ForeignKey('RTag')
 
+class TTag(models.Model):
+    """A normal thread tag. A thread can have more than one tag associated with it,
+    so they go in a separate table."""
+    thread = models.ForeignKey('Thread', on_delete=models.CASCADE)
+    tag = models.ForeignKey('Tag')
+    tagger = models.ForeignKey(User)
+    creation_date = models.DateTimeField()
+    
 class Rigor(models.Model):
     """Holds the different levels of rigor which a thread can be assigned. These
     are defined in a table rather than hardcoded."""
