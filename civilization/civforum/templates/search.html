@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title>FortForecast | Forum Search</title>
+    <link rel="stylesheet" href="/static/search.css">
+    <meta charset="UTF-8"/>
+  </head>
+  <body>
+    <form action="{% url 'search' %}" method="GET">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

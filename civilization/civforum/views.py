@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from civforum.models import *
-from django.db.models import Max
+from django.db.models import Max, F, QuerySet
 from django.contrib.auth.models import User
 from civforum import forms
 from time import time
@@ -137,3 +137,24 @@ def tracker(request):
         return render(request,
                       'tracker.html',
                       {}) #TODO: Placeholder, will add context later
+
+def search(request):
+    if request.method == 'GET':
+        if request.GET.get("searchbar",False):
+            search = request.GET.get("searchbar")
+            result_sets = []
+            author_results = Thread.objects.filter(author__username__icontains=search)
+            if author_results:
+                result_sets.append(author_results)
+            thread_results = Thread.objects.filter(tbody__body__icontains=search)
+            if thread_results:
+                result_sets.append(thread_results)
+            results = QuerySet.union(*result_sets)
+            print(results[0])
+            return render(request,
+                          'search_results.html',
+                          {'results':results})
+        form = forms.SimpleSearchForm()
+        return render(request,
+                      'search.html',
+                      {'form':form})

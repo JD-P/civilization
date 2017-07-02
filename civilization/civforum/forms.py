@@ -36,3 +36,6 @@ class NewPostForm(forms.Form):
                              choices=moods)
     body = forms.CharField(label="Body")
     
+class SimpleSearchForm(forms.Form):
+    """Form for the basic search as might be added to a board listing."""
+    searchbar = forms.CharField(label="Search")

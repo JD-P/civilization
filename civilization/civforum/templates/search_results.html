@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title> FortForecast | Search Results </title>
+    <link rel="stylesheet" href="/static/search_results.css">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    {% for result in results %}
+    <p>{{ result.author.username }}</p>
+    {% endfor %}
+  </body>
+  
+</html>
+
