@@ -63,6 +63,7 @@ class Purpose(models.Model):
 
 class Prediction(models.Model):
     """A prediction. One that might be made as part of a forum post or on its own."""
+    forecaster = models.ForeignKey(User)
     text = models.CharField(max_length=2048)
     judge = models.ForeignKey(User)
     creation_date = models.DateTimeField()
