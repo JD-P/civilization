@@ -39,3 +39,8 @@ class NewPostForm(forms.Form):
 class SimpleSearchForm(forms.Form):
     """Form for the basic search as might be added to a board listing."""
     searchbar = forms.CharField(label="Search")
+
+class ExportForm(forms.Form):
+    """Form to set options for exporting a users data."""
+    output_format = forms.ChoiceField(label="Output Format",
+                                      choices=["XML", "JSON"])
