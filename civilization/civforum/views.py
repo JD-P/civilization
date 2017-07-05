@@ -4,9 +4,11 @@ from django.urls import reverse
 from civforum.models import *
 from django.db.models import Max, F, QuerySet
 from django.contrib.auth.models import User
+from django.core import serializers
 from civforum import forms
 from time import time
 from datetime import datetime
+import json
 
 # Create your views here.
 
@@ -158,3 +160,41 @@ def search(request):
         return render(request,
                       'search.html',
                       {'form':form})
+
+def export(request):
+    if request.method == 'GET':
+        if request.GET.get("output_format",False):
+            format = request.GET.get("output_format")
+            exportables = [('threads',
+                            Thread.objects.filter(author=request.user)),
+                           ('thread_bodies',
+                            TBody.objects.filter(thread__author=request.user)),
+                           ('thread_purposes',
+                            TPurpose.objects.filter(thread__author=request.user)),
+                           ('thread_rtags',
+                            TRTag.objects.filter(thread__author=request.user)),
+                           ('thread_posts',
+                            TPost.objects.filter(author=request.user)),
+                           ('thread_tags',
+                            TTag.objects.filter(tagger=request.user)),
+                           ('thread_post_attachments',
+                            TPostAttachment.objects.filter(post__author=request.user)),
+                           ('predictions',
+                            Prediction.objects.filter(forecaster=request.user)),
+                           ('bans_vacations',
+                            Ban.objects.filter(user=request.user))]
+            exports_serial = {}
+            for exportable in exportables:
+                exports_serial[exportable[0]] = serializers.serialize("json",
+                                                                      exportable[1])
+            response =  HttpResponse(json.dumps(exports_serial),
+                                     content_type="application/json")
+            filename = 'attachment; filename=fortforecast_export_{}_{}.json'.format(
+                 request.user.username,
+                 int(time()))
+            response['Content-Disposition'] = filename             
+            return response
+        else:
+            return render(request,
+                          'export.html',
+                          {'form':forms.ExportForm()})
