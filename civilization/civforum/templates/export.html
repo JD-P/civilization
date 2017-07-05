@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>FortForecast | Export</title>
+    <link rel="stylesheet" href="/static/export.css">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <form action="{% url 'export' %}" method="GET">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
+
