@@ -43,4 +43,4 @@ class SimpleSearchForm(forms.Form):
 class ExportForm(forms.Form):
     """Form to set options for exporting a users data."""
     output_format = forms.ChoiceField(label="Output Format",
-                                      choices=["XML", "JSON"])
+                                      choices=[("xml","XML"), ("json","JSON")])
