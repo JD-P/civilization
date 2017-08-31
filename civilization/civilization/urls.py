@@ -24,4 +24,6 @@ urlpatterns = [
         name="login"),
     url('logout/', auth_views.logout),
     url(r'^forums/', include('civforum.urls')),
+    url(r'^$', auth_views.login,
+        {'extra_context':{'next':'/forums/tracker/'}}),
 ]

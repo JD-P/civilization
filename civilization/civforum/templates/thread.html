@@ -21,6 +21,7 @@
       <p class="text">{{ tpost.body }}</p>
     </article>
     {% endfor %}
+    <a href="{% url 'newpost' thread.board.id thread.id %}">New Post</a>
     </div>
   </body>
 </html>

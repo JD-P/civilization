@@ -5,17 +5,28 @@
     <meta charset="UTF-8">
   </head>
   <body>
+    <div class="threads-header">
+      <p>Rigor Level</p>
+      <p>Title</p>
+      <p>Author</p>
+      <p>Posts</p>
+      <p>Created</p>
+      <p>Last Post</p>
+    </div>
     <div class="threads">
       {% for thread in threads %}
       <div class="thread">
-	<p>{{ thread.rigor.label }}</p>
-	<p><a href="{% url 'thread' pboard.board.id thread.id 0 %}">{{ thread.title }}</a></p>
-	<p>{{ thread.author }}</p>
-	<p>{{ thread.posts }}</p>
-	<p>{{ thread.creation_date }}</p>
-	<p>{{ thread.last_activity }}</p>
-	<p>{{ thread.locked }}</p>
+	<p class="rigor">{{ thread.rigor.label }}</p>
+	<p class="title"><a href="{% url 'thread' pboard.board.id thread.id 0 %}">{{ thread.title }}</a></p>
+	<p class="author">{{ thread.author }}</p>
+	<p class="posts">{{ thread.posts }}</p>
+	<p class="creation-date">{{ thread.creation_date }}</p>
+	<p class="last-activity">{{ thread.last_activity }}</p>
+	<p class="locked">{{ thread.locked }}</p>
+      </div>
       {% endfor %}
+      <div class="new-thread-button">
+	<a href="{% url 'newthread' pboard.board.id %}">New Thread</a>
       </div>
     </div>
   </body>
