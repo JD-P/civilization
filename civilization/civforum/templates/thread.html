@@ -16,7 +16,7 @@
     {% for tpost in tposts %}
     <article class="thread-post">
       <p class="author">{{ tpost.author }}</p>
-      <p class="mood">{{ tpost.mood }}</p>
+      <p class="mood">{{ tpost.mood.label }}</p>
       <p class="created">{{ tpost.creation_date }}</p>
       <p class="text">{{ tpost.body }}</p>
     </article>
