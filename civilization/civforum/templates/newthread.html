@@ -7,8 +7,31 @@
   <body>
     <form action="{% url 'newthread' board_id %}" method="post">
       {% csrf_token %}
-      {{ form }}
-      <input type="submit" value="Submit">
+      <div class="field">
+	<label for="board_id">{{ form.board_id.label}}</label>
+	{{ form.board_id }}
+      </div>
+      <div class="field">
+	<label for="title">{{ form.title.label}}</label> 
+	{{ form.title }}
+      </div>
+      
+      <div class="field">
+	<label for="rigor_id">{{ form.rigor_id.label }}</label>
+	{{ form.rigor_id }}
+      </div>
+      
+      <div class="field">
+	<label for="tbody">{{ form.tbody.label }}</label>
+	{{ form.tbody }}
+      </div>
+      
+      <div class="field">
+	<label for="tags">{{ form.tags.label }}</label>
+	{{ form.tags }}
+      </div>
+      
+      <input id="submit_button" type="submit" value="Submit">
     </form>
   </body>
 </html>

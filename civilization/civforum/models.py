@@ -17,31 +17,31 @@ class Board(models.Model):
 class PublicBoard(models.Model):
     """A top level board. This table exists so that the same board model can be
     used down the stack."""
-    board = models.ForeignKey('Board')
+    board = models.ForeignKey('Board', on_delete=models.CASCADE)
     
 class ProjectBoard(models.Model):
     """Unlike a top level board, a project board is a private enclave for a set 
     of members working collaboratively on something. Any member in good standing
     can create a project board. (This feature for example might be restricted from
     new members to prevent its use as an easy denial of service attack.)"""
-    creator = models.ForeignKey(User)
-    board = models.ForeignKey('Board')
+    creator = models.ForeignKey(User, on_delete=models.PROTECT)
+    board = models.ForeignKey('Board', on_delete=models.CASCADE)
 
 class PBMembers(models.Model):
     """Table specifying who is and is not part of a project board. Project
     boards have a specific set of users and are not generally visible to those 
     who are not invited."""
-    board = models.ForeignKey('ProjectBoard')
-    member = models.ForeignKey(User)
+    board = models.ForeignKey('ProjectBoard', on_delete=models.CASCADE)
+    member = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=50, null=True)
     join_date = models.DateTimeField()
     
 class Thread(models.Model):
     """Table representing a forum thread."""
-    board = models.ForeignKey('Board')
+    board = models.ForeignKey('Board', on_delete=models.CASCADE)
     title = models.CharField(max_length=125)
-    author = models.ForeignKey(User)
-    rigor = models.ForeignKey('Rigor')
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    rigor = models.ForeignKey('Rigor', on_delete=models.PROTECT)
     posts = models.IntegerField()
     creation_date = models.DateTimeField()
     last_activity = models.DateTimeField()
@@ -51,21 +51,28 @@ class TBody(models.Model):
     """A table of thread bodies. One thread can have multiple revisions of 
     the same textual body. This is all the version control I'll be implementing
     for the prototype."""
-    thread = models.ForeignKey('Thread')
+    thread = models.ForeignKey('Thread', on_delete=models.CASCADE)
     version = models.DateTimeField()
     body = models.CharField(max_length=57344)
     
 class Purpose(models.Model):
     """Table to store the different options to put in under the purpose field for
-    a thread."""
+    a thread.
+
+    reverse - The name to use for a reverse query to get a link in the new thread
+    menu."""
+    def __str__(self):
+        return self.name
+    reverse = models.CharField(default="newthread", max_length=100)
     name = models.CharField(max_length=50)
     description = models.TextField()
 
 class Prediction(models.Model):
     """A prediction. One that might be made as part of a forum post or on its own."""
-    forecaster = models.ForeignKey(User, related_name="prediction_forecaster")
+    forecaster = models.ForeignKey(User, related_name="prediction_forecaster",
+                                   null=True, on_delete=models.SET_NULL)
     text = models.CharField(max_length=2048)
-    judge = models.ForeignKey(User, related_name="prediction_judge")
+    judge = models.ForeignKey(User, related_name="prediction_judge", on_delete=models.PROTECT)
     creation_date = models.DateTimeField()
     judge_date = models.DateTimeField(null=True)
     probability = models.DecimalField(max_digits=6,
@@ -79,27 +86,27 @@ class Tag(models.Model):
 class RTag(models.Model):
     """Table to store the different restricted tags which are mandatory to use
     when creating a thread."""
-    tag = models.ForeignKey('Tag')
+    tag = models.ForeignKey('Tag', on_delete=models.CASCADE)
     description = models.TextField()
     
 class TPurpose(models.Model):
     """A thread purpose. A thread can have more than one purpose associated with it,
     so they go in a separate table."""
     thread = models.ForeignKey('Thread',on_delete=models.CASCADE)
-    purpose = models.ForeignKey('Purpose')
+    purpose = models.ForeignKey('Purpose', null=True, on_delete=models.SET_NULL)
     
 class TRTag(models.Model):
     """A restricted/mandatory thread tag. A thread can have more than one rtag 
     associated with it, so they go in a separate table."""
     thread = models.ForeignKey('Thread', on_delete=models.CASCADE)
-    rtag = models.ForeignKey('RTag')
+    rtag = models.ForeignKey('RTag', on_delete=models.CASCADE)
 
 class TTag(models.Model):
     """A normal thread tag. A thread can have more than one tag associated with it,
     so they go in a separate table."""
     thread = models.ForeignKey('Thread', on_delete=models.CASCADE)
-    tag = models.ForeignKey('Tag')
-    tagger = models.ForeignKey(User)
+    tag = models.ForeignKey('Tag', on_delete=models.CASCADE)
+    tagger = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     creation_date = models.DateTimeField()
     
 class Rigor(models.Model):
@@ -110,23 +117,23 @@ class Rigor(models.Model):
     
 class TPost(models.Model):
     """A forum thread post. May have predictions and up to three 100kb attachments."""
-    thread = models.ForeignKey(Thread)
-    author = models.ForeignKey(User)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     creation_date = models.DateTimeField()
     body = models.CharField(max_length=57344)
-    mood = models.ForeignKey('Mood')
+    mood = models.ForeignKey('Mood', null=True, on_delete=models.SET_NULL)
 
 class TPostPrediction(models.Model):
     """A prediction associated with a post. This goes into the general table of
     predictions so this table is just a link to extant predictions in that one."""
-    post = models.ForeignKey('TPost')
-    prediction = models.ForeignKey('Prediction')
+    post = models.ForeignKey('TPost', on_delete=models.CASCADE)
+    prediction = models.ForeignKey('Prediction', on_delete=models.CASCADE)
 
 class TPostAttachment(models.Model):
     """A file attachment associated with a post. A post can only have three of these,
     and no more than 100kb file size per attachment. This has more to do with the sparse
     space I have on my servers than any particular animus against big files."""
-    post = models.ForeignKey('TPost')
+    post = models.ForeignKey('TPost', on_delete=models.CASCADE)
     file = models.FileField(upload_to='attachments', max_length=102400)
 
 class Mood(models.Model):
@@ -140,8 +147,8 @@ class Ban(models.Model):
     to access the system. Note that not all things in the ban table are *bans* per se.
     For example a user might request to have themselves disallowed from using the site
     for a few hours so they can get things done. Or even an entire week."""
-    user = models.ForeignKey(User)
-    ban_type = models.ForeignKey('BanType')
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    ban_type = models.ForeignKey('BanType', on_delete=models.PROTECT)
     ban_reason = models.TextField()
     ban_date = models.DateTimeField()
     ban_lifted = models.DateTimeField()

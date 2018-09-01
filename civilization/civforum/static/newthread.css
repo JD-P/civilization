@@ -1,0 +1,47 @@
+form {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25vw;
+  font-size: 1.5em;
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2vh;
+}
+
+label {
+  
+  margin-right: 1vw;
+}
+
+label:after {
+  content: ":";
+}
+
+select {
+  font-size: .8em;
+}
+
+textarea {
+  height: 50vh;
+  font-size: 1em;
+}
+
+#id_title {
+  font-size: .8em;
+}
+
+#id_tags {
+  font-size: .8em;
+}
+
+#submit_button {
+  font-size: 1em;
+  width: 6vw;
+  margin-top: 2vh;
+  margin-left: 10vw;
+}

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'civforum',
+    'thread_poll',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, "civforum/templates/registrations/"),
-                 os.path.join(BASE_DIR, "civforum/templates/")],
+                 os.path.join(BASE_DIR, "civforum/templates/"),
+                 os.path.join(BASE_DIR, "thread_poll/templates/")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -25,9 +25,11 @@
 	<p class="locked">{{ thread.locked }}</p>
       </div>
       {% endfor %}
-      <div class="new-thread-button">
-	<a href="{% url 'newthread' pboard.board.id %}">New Thread</a>
-      </div>
+      <form class="new-thread-button" action="{% url 'newthread_redirect' pboard.board.id %}" method="get">
+	<label for="purpose_id">New:</label>
+	{{ form.purpose }}
+	<input id="submit_button" type="submit" value="Submit">
+      </form>
     </div>
   </body>
 </html>

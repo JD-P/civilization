@@ -24,10 +24,12 @@ def board(request, board_id=0):
     if request.method == 'GET':
         pboard = PublicBoard.objects.filter(board__id=board_id)[0]
         threads = Thread.objects.filter(board=pboard.board)
+        form = forms.NewThreadRedirectForm()
         return render(request,
                       'board.html',
                       {'pboard':pboard,
-                       'threads':threads})
+                       'threads':threads,
+                       'form':form})
 
 def thread(request, board_id, thread_id, page_number=0):
     """Individual thread view. Threads only have ten posts a page and end 
@@ -35,7 +37,7 @@ def thread(request, board_id, thread_id, page_number=0):
     if request.method == 'POST':
         HttpResponse("You use the newpost view to add messages to a thread.")
     elif request.method == 'GET':
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             thread = Thread.objects.filter(id=thread_id)[0]
             tbody_max = TBody.objects.aggregate(Max('version'))['version__max']
             tbody = TBody.objects.filter(version=tbody_max)[0]
@@ -50,9 +52,23 @@ def thread(request, board_id, thread_id, page_number=0):
     else:
         HttpResponse("Nothing weird now, just use a GET request.")
     
-    
+
+def newthread_redirect(request, board_id=0):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+    #TODO: Is it actually safe to pass user input to reverse()?
+    try:
+        purpose = Purpose.objects.get(id=request.GET.get("purpose"))
+    except:
+        return HttpResponseRedirect(reverse('board'),
+                                    kwargs={'board_id':board_id})
+    return HttpResponseRedirect(
+        reverse(purpose.reverse,
+                kwargs={'board_id':board_id})
+        )
+        
 def newthread(request, board_id=0):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
             user_id = request.user.id
     else:
         return HttpResponseRedirect(reverse('login'))
@@ -105,7 +121,7 @@ def newthread(request, board_id=0):
                    'form':form})
 
 def newpost(request, board_id=0, thread_id=0):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user_id = request.user.id
     else:
         HttpResponseRedirect(reverse('login'))
